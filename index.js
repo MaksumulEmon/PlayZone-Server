@@ -99,88 +99,88 @@ const authenticateUser = async (req, res, next) => {
 };
 
 // Seed sample grounds if collection is empty
-async function seedInitialPlaygrounds() {
-    try {
-        const playgrounds = db.collection("playgrounds");
-        const count = await playgrounds.countDocuments();
-        if (count === 0) {
-            const initialGrounds = [
-                {
-                    title: "Apex Arena Futsal Turf",
-                    description: "Premium artificial turf ground for 5-a-side and 7-a-side football matches. Equipped with high-power LED night floodlights and locker rooms.",
-                    sportType: "Football",
-                    city: "North City",
-                    address: "102 Stadium Boulevard, North City",
-                    image: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&auto=format&fit=crop&q=60",
-                    pricePerHour: 45,
-                    openTime: "07:00",
-                    closeTime: "23:00",
-                    amenities: ["Lighting", "Changing Room", "Parking", "Shower", "Refreshments"],
-                    ownerId: "demo-owner",
-                    ownerEmail: "owner@playzone.com",
-                    ownerName: "Marcus Vance",
-                    status: "active",
-                    createdAt: new Date()
-                },
-                {
-                    title: "SmashZone Indoor Badminton Club",
-                    description: "Professional synthetic wooden mat courts with BWF standard spacing and climate control.",
-                    sportType: "Badminton",
-                    city: "Central District",
-                    address: "45 Sports Complex Avenue, Central District",
-                    image: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&auto=format&fit=crop&q=60",
-                    pricePerHour: 30,
-                    openTime: "06:00",
-                    closeTime: "22:00",
-                    amenities: ["Lighting", "Changing Room", "Equipment Rental", "Shower"],
-                    ownerId: "demo-owner",
-                    ownerEmail: "owner@playzone.com",
-                    ownerName: "Marcus Vance",
-                    status: "active",
-                    createdAt: new Date()
-                },
-                {
-                    title: "Grand Slam Tennis Complex",
-                    description: "Standard hard tennis court with court lighting and spectator seating.",
-                    sportType: "Tennis",
-                    city: "Westside",
-                    address: "88 Grand Slam Drive, Westside",
-                    image: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=800&auto=format&fit=crop&q=60",
-                    pricePerHour: 55,
-                    openTime: "08:00",
-                    closeTime: "21:00",
-                    amenities: ["Lighting", "Parking", "Refreshments"],
-                    ownerId: "demo-owner",
-                    ownerEmail: "owner@playzone.com",
-                    ownerName: "Marcus Vance",
-                    status: "active",
-                    createdAt: new Date()
-                },
-                {
-                    title: "Strikers Cricket Turf Arena",
-                    description: "Box cricket and net practice turf with bowling machines and digital scoreboard.",
-                    sportType: "Cricket",
-                    city: "Eastside",
-                    address: "12 Cricket Ground Way, Eastside",
-                    image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800&auto=format&fit=crop&q=60",
-                    pricePerHour: 60,
-                    openTime: "06:00",
-                    closeTime: "23:00",
-                    amenities: ["Lighting", "Equipment Rental", "Parking", "Refreshments"],
-                    ownerId: "demo-owner",
-                    ownerEmail: "owner@playzone.com",
-                    ownerName: "Marcus Vance",
-                    status: "active",
-                    createdAt: new Date()
-                }
-            ];
-            await playgrounds.insertMany(initialGrounds);
-            console.log("Seeded initial sample playgrounds to MongoDB.");
-        }
-    } catch (e) {
-        console.error("Error seeding initial playgrounds:", e);
-    }
-}
+// async function seedInitialPlaygrounds() {
+//     try {
+//         const playgrounds = db.collection("playgrounds");
+//         const count = await playgrounds.countDocuments();
+//         if (count === 0) {
+//             const initialGrounds = [
+//                 {
+//                     title: "Apex Arena Futsal Turf",
+//                     description: "Premium artificial turf ground for 5-a-side and 7-a-side football matches. Equipped with high-power LED night floodlights and locker rooms.",
+//                     sportType: "Football",
+//                     city: "North City",
+//                     address: "102 Stadium Boulevard, North City",
+//                     image: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=800&auto=format&fit=crop&q=60",
+//                     pricePerHour: 45,
+//                     openTime: "07:00",
+//                     closeTime: "23:00",
+//                     amenities: ["Lighting", "Changing Room", "Parking", "Shower", "Refreshments"],
+//                     ownerId: "demo-owner",
+//                     ownerEmail: "owner@playzone.com",
+//                     ownerName: "Marcus Vance",
+//                     status: "active",
+//                     createdAt: new Date()
+//                 },
+//                 {
+//                     title: "SmashZone Indoor Badminton Club",
+//                     description: "Professional synthetic wooden mat courts with BWF standard spacing and climate control.",
+//                     sportType: "Badminton",
+//                     city: "Central District",
+//                     address: "45 Sports Complex Avenue, Central District",
+//                     image: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&auto=format&fit=crop&q=60",
+//                     pricePerHour: 30,
+//                     openTime: "06:00",
+//                     closeTime: "22:00",
+//                     amenities: ["Lighting", "Changing Room", "Equipment Rental", "Shower"],
+//                     ownerId: "demo-owner",
+//                     ownerEmail: "owner@playzone.com",
+//                     ownerName: "Marcus Vance",
+//                     status: "active",
+//                     createdAt: new Date()
+//                 },
+//                 {
+//                     title: "Grand Slam Tennis Complex",
+//                     description: "Standard hard tennis court with court lighting and spectator seating.",
+//                     sportType: "Tennis",
+//                     city: "Westside",
+//                     address: "88 Grand Slam Drive, Westside",
+//                     image: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=800&auto=format&fit=crop&q=60",
+//                     pricePerHour: 55,
+//                     openTime: "08:00",
+//                     closeTime: "21:00",
+//                     amenities: ["Lighting", "Parking", "Refreshments"],
+//                     ownerId: "demo-owner",
+//                     ownerEmail: "owner@playzone.com",
+//                     ownerName: "Marcus Vance",
+//                     status: "active",
+//                     createdAt: new Date()
+//                 },
+//                 {
+//                     title: "Strikers Cricket Turf Arena",
+//                     description: "Box cricket and net practice turf with bowling machines and digital scoreboard.",
+//                     sportType: "Cricket",
+//                     city: "Eastside",
+//                     address: "12 Cricket Ground Way, Eastside",
+//                     image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800&auto=format&fit=crop&q=60",
+//                     pricePerHour: 60,
+//                     openTime: "06:00",
+//                     closeTime: "23:00",
+//                     amenities: ["Lighting", "Equipment Rental", "Parking", "Refreshments"],
+//                     ownerId: "demo-owner",
+//                     ownerEmail: "owner@playzone.com",
+//                     ownerName: "Marcus Vance",
+//                     status: "active",
+//                     createdAt: new Date()
+//                 }
+//             ];
+//             await playgrounds.insertMany(initialGrounds);
+//             console.log("Seeded initial sample playgrounds to MongoDB.");
+//         }
+//     } catch (e) {
+//         console.error("Error seeding initial playgrounds:", e);
+//     }
+// }
 
 // --- Routes ---
 
