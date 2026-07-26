@@ -520,7 +520,75 @@ app.patch('/api/bookings/:id/status', authenticateUser, async (req, res) => {
     }
 });
 
-// DELETE Cancel Booking (Player owns it or Admin)
+// ── ADMIN USER MANAGEMENT ENDPOINTS ───────────────────────────────────────
+
+// GET All Users (Admin only)
+app.get('/api/admin/users', authenticateUser, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: "Admin access required." });
+        }
+        const users = await db.collection("user").find({}).toArray();
+        res.json({ success: true, count: users.length, data: users });
+    } catch (error) {
+        console.error("Error fetching admin users:", error);
+        res.status(500).json({ success: false, message: "Error fetching users" });
+    }
+});
+
+// DELETE User (Admin only)
+app.delete('/api/admin/users/:id', authenticateUser, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: "Admin access required." });
+        }
+        const { id } = req.params;
+        let query;
+        try { query = { _id: new ObjectId(id) }; }
+        catch { query = { id: id }; }
+
+        const userToDelete = await db.collection("user").findOne(query);
+        if (!userToDelete) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        if (userToDelete.id === req.user.id || userToDelete.email === req.user.email) {
+            return res.status(400).json({ success: false, message: "You cannot delete your own admin account." });
+        }
+
+        await db.collection("user").deleteOne(query);
+        res.json({ success: true, message: "User deleted successfully." });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ success: false, message: "Error deleting user" });
+    }
+});
+
+// PATCH Change User Role (Admin only)
+app.patch('/api/admin/users/:id/role', authenticateUser, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, message: "Admin access required." });
+        }
+        const { id } = req.params;
+        const { role } = req.body;
+        if (!['user', 'owner', 'admin'].includes(role)) {
+            return res.status(400).json({ success: false, message: "Invalid role specified." });
+        }
+
+        let query;
+        try { query = { _id: new ObjectId(id) }; }
+        catch { query = { id: id }; }
+
+        await db.collection("user").updateOne(query, { $set: { role, updatedAt: new Date() } });
+        res.json({ success: true, message: `User role updated to ${role}.` });
+    } catch (error) {
+        console.error("Error updating user role:", error);
+        res.status(500).json({ success: false, message: "Error updating user role" });
+    }
+});
+
+// ── DELETE CANCEL BOOKING ──────────────────────────────────────────────────
 app.delete('/api/bookings/:id', authenticateUser, async (req, res) => {
     try {
         const { id } = req.params;
