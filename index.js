@@ -210,33 +210,33 @@ app.get('/api/auth/me', authenticateUser, (req, res) => {
 // --- PLAYGROUNDS ENDPOINTS ---
 
 // GET All Playgrounds (Public - supports filters by sportType, city, search)
-app.get('/api/playgrounds', async (req, res) => {
-    try {
-        const { sportType, city, search } = req.query;
-        const query = { status: "active" };
+// app.get('/api/playgrounds', async (req, res) => {
+//     try {
+//         const { sportType, city, search } = req.query;
+//         const query = { status: "active" };
 
-        if (sportType && sportType !== "All") {
-            query.sportType = { $regex: new RegExp(`^${sportType}$`, "i") };
-        }
-        if (city) {
-            query.city = { $regex: new RegExp(city, "i") };
-        }
-        if (search) {
-            query.$or = [
-                { title: { $regex: new RegExp(search, "i") } },
-                { description: { $regex: new RegExp(search, "i") } },
-                { city: { $regex: new RegExp(search, "i") } },
-                { sportType: { $regex: new RegExp(search, "i") } }
-            ];
-        }
+//         if (sportType && sportType !== "All") {
+//             query.sportType = { $regex: new RegExp(`^${sportType}$`, "i") };
+//         }
+//         if (city) {
+//             query.city = { $regex: new RegExp(city, "i") };
+//         }
+//         if (search) {
+//             query.$or = [
+//                 { title: { $regex: new RegExp(search, "i") } },
+//                 { description: { $regex: new RegExp(search, "i") } },
+//                 { city: { $regex: new RegExp(search, "i") } },
+//                 { sportType: { $regex: new RegExp(search, "i") } }
+//             ];
+//         }
 
-        const playgrounds = await db.collection("playgrounds").find(query).sort({ createdAt: -1 }).toArray();
-        res.json({ success: true, count: playgrounds.length, data: playgrounds });
-    } catch (error) {
-        console.error("Error fetching playgrounds:", error);
-        res.status(500).json({ success: false, message: "Error fetching playgrounds" });
-    }
-});
+//         const playgrounds = await db.collection("playgrounds").find(query).sort({ createdAt: -1 }).toArray();
+//         res.json({ success: true, count: playgrounds.length, data: playgrounds });
+//     } catch (error) {
+//         console.error("Error fetching playgrounds:", error);
+//         res.status(500).json({ success: false, message: "Error fetching playgrounds" });
+//     }
+// });
 
 // GET My Playgrounds (Authenticated Owner / Admin)
 app.get('/api/playgrounds/my-grounds', authenticateUser, async (req, res) => {
